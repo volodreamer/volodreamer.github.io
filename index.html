@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Volodymyr</title>
+  <meta name="description" content="Technical 3D artist and teacher. Blender tutoring and consulting, product visualization, and small websites.">
+  <meta name="theme-color" content="#0b0b0a">
+  <meta property="og:title" content="Volodymyr">
+  <meta property="og:description" content="Blender tutoring, product visualization, and small websites.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://volodreamer.github.io/">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0b0a;
+      --fg: #f0ece4;
+      --muted: #8c877e;
+      --subtle: #5e5b55;
+      --surface: #141413;
+      --raised: #1c1b19;
+      --border: #2a2926;
+      --hairline: #3a3935;
+      --accent: #c9c3b8;
+      --radius: 24px;
+      --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+      --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+      --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --shadow: 0 0 0 1px rgb(240 236 228 / 0.08);
+      --shadow-hover: 0 0 0 1px rgb(240 236 228 / 0.16);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    ::selection { background: var(--fg); color: var(--bg); }
+
+    h1, h2, h3 { text-wrap: balance; }
+    p { text-wrap: pretty; }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+    .frame {
+      min-height: 100dvh;
+      padding: max(1.25rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left));
+    }
+
+    .inner {
+      min-height: calc(100dvh - 2.5rem);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: color-mix(in oklab, var(--surface) 70%, var(--bg));
+    }
+
+    .grain {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      opacity: 0.04;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.9'/></svg>");
+    }
+
+    header, footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+    }
+
+    footer {
+      border-bottom: 0;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+      color: var(--muted);
+      font-size: 0.75rem;
+      padding: 1rem 1.25rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .mark {
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .handle { font-size: 0.875rem; font-weight: 500; letter-spacing: -0.01em; }
+
+    nav a {
+      color: var(--muted);
+      padding: 0.5rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    nav a:hover { color: var(--fg); }
+    nav .sep { color: var(--subtle); }
+
+    main {
+      display: grid;
+      flex: 1;
+    }
+
+    .hero {
+      padding: 2.5rem 1.25rem 0.5rem;
+    }
+
+    .kicker {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    h1 {
+      margin: 1.25rem 0 0;
+      font-family: var(--font-display);
+      font-size: clamp(2.75rem, 8vw, 4.5rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+    }
+
+    .role {
+      margin: 1.5rem 0 0;
+      max-width: 22rem;
+      font-size: 1.125rem;
+      line-height: 1.3;
+      color: var(--accent);
+    }
+
+    .line {
+      margin: 0.75rem 0 0;
+      max-width: 22rem;
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .rating {
+      margin: 2rem 0 0;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .hero-cta { margin-top: 2rem; }
+
+    .hero-cta .hint {
+      margin: 0;
+      font-size: 0.75rem;
+      color: var(--subtle);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .work {
+      padding: 2rem 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .work > .kicker { margin-bottom: 1rem; }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.25rem;
+      padding: 0.25rem;
+      border-radius: 16px;
+      background: var(--bg);
+      box-shadow: var(--shadow);
+    }
+
+    .tab {
+      min-height: 44px;
+      text-align: left;
+      border-radius: 10px;
+      padding: 0.75rem 0.5rem;
+      color: var(--muted);
+    }
+
+    .tab[aria-selected="true"] {
+      background: var(--raised);
+      color: var(--fg);
+      box-shadow: var(--shadow);
+    }
+
+    .tab:hover { color: var(--fg); }
+
+    .tab .num {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--subtle);
+    }
+
+    .tab .label {
+      display: block;
+      margin-top: 0.25rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .tab .short { display: none; margin-top: 0.15rem; font-size: 0.75rem; color: var(--muted); }
+
+    .panel { margin-top: 2rem; }
+
+    .panel .kicker { margin: 0; }
+
+    .panel h2 {
+      margin: 0.75rem 0 0;
+      max-width: 36rem;
+      font-family: var(--font-display);
+      font-size: 1.875rem;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .panel .body {
+      margin: 1rem 0 0;
+      max-width: 36rem;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .items {
+      display: grid;
+      gap: 1px;
+      margin: 2rem 0 0;
+      overflow: hidden;
+      border-radius: 16px;
+      background: var(--border);
+    }
+
+    .items li {
+      list-style: none;
+      background: var(--surface);
+      padding: 1.25rem;
+    }
+
+    .items { padding: 0; }
+
+    .items h3 {
+      margin: 0;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .items p {
+      margin: 0.5rem 0 0;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .note {
+      margin: 1.75rem 0 0;
+      max-width: 36rem;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .panel-cta {
+      margin-top: 1.75rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 44px;
+      border-radius: 8px;
+      padding: 0 0.9rem 0 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .btn-primary { background: var(--fg); color: var(--bg); }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-ghost { box-shadow: var(--shadow); }
+    .btn-ghost:hover { box-shadow: var(--shadow-hover); }
+
+    .arrow { width: 14px; height: 14px; }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1rem;
+      margin-top: 1.25rem;
+      font-size: 0.875rem;
+    }
+
+    .contact-row a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 44px;
+      color: var(--muted);
+    }
+
+    .contact-row a:hover { color: var(--fg); }
+
+    footer p { margin: 0; }
+    footer a:hover { color: var(--fg); }
+    footer .meta { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+    .skip {
+      position: absolute;
+      left: -999px;
+    }
+    .skip:focus {
+      left: 1.5rem;
+      top: 1.5rem;
+      z-index: 20;
+      background: var(--fg);
+      color: var(--bg);
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+    }
+
+    .tab-enter { animation: tab-in 280ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+    @keyframes tab-in {
+      from { opacity: 0; transform: translateY(8px); filter: blur(2px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    @media (min-width: 640px) {
+      header, footer, .hero { padding-left: 2.5rem; padding-right: 2.5rem; }
+      .work { padding-left: 2.5rem; padding-right: 2.5rem; }
+      .tab { min-height: 64px; padding: 1rem; }
+      .tab .label { font-size: 1rem; }
+      .tab .short { display: block; }
+      .role { font-size: 1.25rem; }
+      .panel h2 { font-size: 2.25rem; }
+      .items { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (min-width: 1024px) {
+      header, footer { padding-left: 3rem; padding-right: 3rem; }
+      main { grid-template-columns: minmax(17rem, 0.85fr) minmax(0, 1.35fr); align-items: start; }
+      .hero {
+        position: sticky;
+        top: 0;
+        min-height: calc(100dvh - 8rem);
+        display: flex;
+        flex-direction: column;
+        padding: 3.5rem 3rem;
+      }
+      .hero-cta { margin-top: auto; padding-top: 3rem; }
+      .work {
+        border-top: 0;
+        border-left: 1px solid var(--border);
+        padding: 3rem 2.5rem;
+      }
+      footer { flex-direction: row; }
+    }
+
+    @media (max-width: 639px) {
+      footer { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .grain, .tab-enter { animation: none; display: revert; }
+      .grain { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="frame">
+    <div class="inner">
+      <a class="skip" href="#work">Skip to services</a>
+      <header>
+        <div class="brand">
+          <span class="mark" aria-hidden="true">V</span>
+          <span class="handle">volodreamer</span>
+        </div>
+        <nav aria-label="Elsewhere">
+          <a href="https://www.fiverr.com/volodreamer" target="_blank" rel="noreferrer">Fiverr</a>
+          <span class="sep" aria-hidden="true">/</span>
+          <a href="https://x.com/vertexology" target="_blank" rel="noreferrer">X</a>
+          <span class="sep" aria-hidden="true">/</span>
+          <a href="https://github.com/volodreamer" target="_blank" rel="noreferrer">GitHub</a>
+        </nav>
+      </header>
+
+      <main>
+        <div class="hero">
+          <p class="kicker">Ukraine · English</p>
+          <h1>Volodymyr</h1>
+          <p class="role">Technical 3D artist and teacher.</p>
+          <p class="line">I teach Blender, visualize products, and ship small websites.</p>
+          <p class="rating">Top Rated on Fiverr · 4.9 from 660+ reviews</p>
+          <div class="hero-cta">
+            <p class="hint">Usually replies within an hour.</p>
+            <div class="actions">
+              <a class="btn btn-primary" href="https://www.fiverr.com/volodreamer" target="_blank" rel="noreferrer">
+                Book on Fiverr
+                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+              </a>
+              <a class="btn btn-ghost" href="mailto:volodreamer@gmail.com?subject=Hello%20from%20the%20site">Email</a>
+            </div>
+          </div>
+        </div>
+
+        <section class="work" id="work">
+          <p class="kicker">What do you need?</p>
+          <div class="tabs" role="tablist" aria-label="Services">
+            <button class="tab" role="tab" id="tab-blender" aria-controls="panel-blender" aria-selected="true" data-tab="blender">
+              <span class="num">01</span>
+              <span class="label">Blender</span>
+              <span class="short">Lessons & consulting</span>
+            </button>
+            <button class="tab" role="tab" id="tab-viz" aria-controls="panel-viz" aria-selected="false" tabindex="-1" data-tab="viz">
+              <span class="num">02</span>
+              <span class="label">Visualization</span>
+              <span class="short">Product stills</span>
+            </button>
+            <button class="tab" role="tab" id="tab-web" aria-controls="panel-web" aria-selected="false" tabindex="-1" data-tab="web">
+              <span class="num">03</span>
+              <span class="label">Web</span>
+              <span class="short">Sites & MVPs</span>
+            </button>
+          </div>
+
+          <article class="panel tab-enter" role="tabpanel" id="panel" aria-labelledby="tab-blender"></article>
+        </section>
+      </main>
+
+      <footer>
+        <p>Prefer Fiverr to book a meeting. Usually replies within an hour.</p>
+        <p class="meta">
+          <a href="./privacy-policy.html">Privacy</a>
+          <span>© 2026 Volodymyr</span>
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const SERVICES = {
+      blender: {
+        kicker: "Tutoring · workflows · automation · rescue",
+        lead: "Clear 1-on-1 lessons, and the technical work around them.",
+        body: "I come from teaching, not from a YouTube script. We meet on Zoom with screen share. You can record. If you are stuck on a file, a crash, or a repetitive task, that is consulting — we fix the thing, then I show you why it broke.",
+        items: [
+          ["Tutoring", "Interface, modeling, modifiers, materials, lighting, rendering. Beginner to early intermediate, at your pace."],
+          ["Workflows", "Clean scenes, Geometry Nodes, a process you can run again next week without me."],
+          ["Automation", "Python scripts, operators, panels, batch import/export, headless jobs. Commented, with short instructions."],
+          ["Troubleshooting", "Corrupted files, missing textures, Cycles/EEVEE crashes, bad exports. Fast, then explained."]
+        ],
+        note: "Message first with your level or the stuck point. I will point you to a lesson, a script, or a file fix.",
+        primary: ["Book a lesson", "https://www.fiverr.com/volodreamer/teach-blender-3d-modeling"],
+        secondary: [
+          ["Automation", "https://www.fiverr.com/volodreamer/create-blender-python-scripts-and-automation-for-your-workflow"],
+          ["File won't open", "https://www.fiverr.com/volodreamer/fix-your-blender-3d-model-issue-or-file-fast"]
+        ]
+      },
+      viz: {
+        kicker: "Marketplaces · shops · quiet luxury",
+        lead: "Stills that sell the object — from a thumbnail to a bottle that feels expensive.",
+        body: "Perfume, wine, spirits, cosmetics: glass, liquid, metal, and paper have to hold up in close-up and still read at two hundred pixels. I also make straightforward pack shots for shops that just need the product to look true.",
+        items: [
+          ["Marketplace & shop", "Clean product stills for listings, catalogs, and brand pages. Crop-safe, consistent, ready to publish."],
+          ["Luxury", "Lighting and materials for fragrance, alcohol, and cosmetics. The kind of quiet that looks paid-for."],
+          ["Reusable setups", "A scene you can keep using when the next SKU arrives — same camera, same light, new object."],
+          ["What I need", "Photos, CAD, a reference board, or a brief. We agree the shot list before I light anything."]
+        ],
+        note: "Not sure if it is a still, a turntable, or a full scene? Message me with the product. I will say what actually helps.",
+        primary: ["Start a viz project", "https://www.fiverr.com/volodreamer"],
+        secondary: []
+      },
+      web: {
+        kicker: "One-pagers · apps · first versions",
+        lead: "A one-page site, a small web app, or an MVP — with a live URL, not a zip of files.",
+        body: "I build with AI tools and then I read the code. If an AI-generated page is almost there, I finish it. If you need a first version of a tool, I ship something people can open on a phone.",
+        items: [
+          ["One-page sites", "Personal pages, studio sites, landing pages. Hosted on GitHub Pages when that is the right home."],
+          ["Web apps & MVPs", "Small tools with a real interface. Enough to use, show, or test — not a twelve-month roadmap."],
+          ["Rescue", "Broken or half-finished AI builds. I open the project, fix what failed, and hand it back working."],
+          ["Recent work", "SushiGuide, a local sushi directory. HatchWatch, a care companion for a physical digital pet."]
+        ],
+        note: "Send a sketch, a broken preview, or a sentence. I will tell you if it is a page, an app, or too big.",
+        primary: ["Start a site", "https://www.fiverr.com/volodreamer"],
+        secondary: [
+          ["SushiGuide", "https://sushiguide.github.io/"],
+          ["HatchWatch", "https://volodreamer.github.io/hatchwatch/"]
+        ]
+      }
+    };
+
+    const IDS = ["blender", "viz", "web"];
+    const panel = document.getElementById("panel");
+    const tabs = [...document.querySelectorAll("[data-tab]")];
+
+    function arrow() {
+      return '<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>';
+    }
+
+    function render(id) {
+      const s = SERVICES[id];
+      panel.classList.remove("tab-enter");
+      void panel.offsetWidth;
+      panel.classList.add("tab-enter");
+      panel.setAttribute("aria-labelledby", "tab-" + id);
+      panel.id = "panel-" + id;
+      panel.innerHTML =
+        '<p class="kicker">' + s.kicker + "</p>" +
+        "<h2>" + s.lead + "</h2>" +
+        '<p class="body">' + s.body + "</p>" +
+        '<ul class="items">' +
+          s.items.map(function (item) {
+            return "<li><h3>" + item[0] + "</h3><p>" + item[1] + "</p></li>";
+          }).join("") +
+        "</ul>" +
+        '<p class="note">' + s.note + "</p>" +
+        '<div class="panel-cta"><div class="actions">' +
+          '<a class="btn btn-primary" href="' + s.primary[1] + '" target="_blank" rel="noreferrer">' + s.primary[0] + arrow() + "</a>" +
+          s.secondary.map(function (link) {
+            return '<a class="btn btn-ghost" href="' + link[1] + '" target="_blank" rel="noreferrer">' + link[0] + arrow() + "</a>";
+          }).join("") +
+        "</div>" +
+        '<div class="contact-row">' +
+          '<a href="mailto:volodreamer@gmail.com?subject=Hello%20from%20the%20site">volodreamer@gmail.com</a>' +
+          '<a href="https://x.com/vertexology" target="_blank" rel="noreferrer">Message on X</a>' +
+        "</div></div>";
+    }
+
+    function select(id, writeHash) {
+      if (!SERVICES[id]) id = "blender";
+      tabs.forEach(function (tab) {
+        const on = tab.dataset.tab === id;
+        tab.setAttribute("aria-selected", on ? "true" : "false");
+        tab.tabIndex = on ? 0 : -1;
+      });
+      render(id);
+      if (writeHash !== false) history.replaceState(null, "", "#" + id);
+    }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener("click", function () { select(tab.dataset.tab); });
+      tab.addEventListener("keydown", function (event) {
+        const i = IDS.indexOf(tab.dataset.tab);
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          const next = IDS[(i + 1) % IDS.length];
+          select(next);
+          document.querySelector('[data-tab="' + next + '"]').focus();
+        } else if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          const prev = IDS[(i - 1 + IDS.length) % IDS.length];
+          select(prev);
+          document.querySelector('[data-tab="' + prev + '"]').focus();
+        }
+      });
+    });
+
+    function fromHash() {
+      const id = location.hash.replace(/^#/, "");
+      select(SERVICES[id] ? id : "blender", false);
+    }
+
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
+  </script>
+</body>
+</html>

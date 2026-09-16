@@ -1,2 +1,5 @@
 # volodreamer.github.io
-personal brand page and related
+
+Personal studio page — Blender, visualization, web.
+
+Live: https://volodreamer.github.io/
